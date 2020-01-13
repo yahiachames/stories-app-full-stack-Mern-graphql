@@ -5,7 +5,7 @@ class SignUp extends Component {
     return (
       <div className='content'>
         <h2>Register</h2>
-        <form action=''>
+        <form action='' className='form'>
           <input type='text' placeholder='name' />
           <input type='email' placeholder='Email' />
           <input type='password' placeholder='password' />
