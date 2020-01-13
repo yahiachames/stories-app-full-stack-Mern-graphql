@@ -29,3 +29,33 @@ ul {
 a {
   text-decoration: none;
 }
+.content {
+  text-align: center;
+}
+input {
+  width: 30%;
+  padding: 1% 1.5%;
+  margin: 1% 0%;
+  border-radius: 3%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+}
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 1% 1.2%;
+  margin: 1% 0;
+  border: none;
+  cursor: pointer;
+  width: 10%;
+  opacity: 0.9;
+}
+button:hover {
+  opacity: 1;
+}
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
