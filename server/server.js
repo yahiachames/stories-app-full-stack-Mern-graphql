@@ -1,23 +1,22 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
+const cors = require("cors");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 const PORT = process.env.PORT || 5000;
 const { graphqlExpress, graphiqlExpress } = require("graphql-server-express");
 const { makeExecutableSchema } = require("graphql-tools");
-const typeDefs = `
-type Query {
-    hello : String
-}
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => "Hello World"
-  }
-};
+const { typeDefs } = require("./schema");
+const { resolvers } = require("./resolvers");
+dotenv.config();
+mongoose
+  .connect(process.env.MONGODB_URL, { useNewUrlParser: true })
+  .then(() => console.log("mongoDB is connected"))
+  .catch(e => console.log("err happend", e));
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
-
+app.use(cors());
 app.use("/graphql", bodyParser.json(), graphqlExpress({ schema }));
 app.use(
   "/graphiql",
