@@ -9,6 +9,7 @@ const { graphqlExpress, graphiqlExpress } = require("graphql-server-express");
 const { makeExecutableSchema } = require("graphql-tools");
 const { typeDefs } = require("./schema");
 const { resolvers } = require("./resolvers");
+const User = require("./models/User");
 dotenv.config();
 mongoose
   .connect(process.env.MONGODB_URL, { useNewUrlParser: true })
@@ -17,6 +18,18 @@ mongoose
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 app.use(cors());
+app.use(async (req, res, next) => {
+  const token = req.headers.authorization;
+  if (token && token !== null) {
+    try {
+      const currentUser = await jwt.verify(token, process.env.SECRET);
+      req.currentUser = currentUser;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  return next();
+});
 app.use("/graphql", bodyParser.json(), graphqlExpress({ schema }));
 app.use(
   "/graphiql",

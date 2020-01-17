@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { SIGNUP_USER } from "../../queries/index";
+import { Mutation } from "react-apollo";
+
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -11,52 +14,75 @@ class SignUp extends Component {
     };
 
     this.handelChange = this.handelChange.bind(this);
-    this.handelSubmit = this.handelSubmit.bind(this);
+    this.validateForm = this.validateForm.bind(this);
   }
   handelChange(e) {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
   }
-  handelSubmit(e) {
-    e.preventDefault();
-    console.log("submited");
+  validateForm(e) {
+    const { username, email, password, password2 } = this.state;
+    return (
+      !password || !password2 || !username || !email || password2 !== password2
+    );
   }
   render() {
     const { username, email, password, password2 } = this.state;
     return (
       <div className='content'>
         <h2>Register</h2>
-        <form action='' className='form' onSubmit={this.handelSubmit}>
-          <input
-            type='text'
-            placeholder='name'
-            onChange={this.handelChange}
-            value={username}
-            name='username'
-          />
-          <input
-            type='email'
-            placeholder='Email'
-            onChange={this.handelChange}
-            value={email}
-            name='email'
-          />
-          <input
-            type='password'
-            placeholder='password'
-            onChange={this.handelChange}
-            value={password}
-            name='password'
-          />
-          <input
-            type='password'
-            placeholder='repeat password'
-            onChange={this.handelChange}
-            value={password2}
-            name='password2'
-          />
-          <button type='submit'> Submit</button>
-        </form>
+        <Mutation mutation={SIGNUP_USER}>
+          {(signupUser, { data, loading, error }) => (
+            <form
+              className='form'
+              onSubmit={async e => {
+                try {
+                  e.preventDefault();
+                  const { data } = await signupUser({
+                    variables: { email, username, password }
+                  });
+                  localStorage.setItem("token", data.signupUser.token);
+                  this.setState({ username: "", password: "", email: "" });
+                } catch (err) {
+                  console.log(err);
+                }
+              }}
+            >
+              <input
+                type='text'
+                placeholder='name'
+                onChange={this.handelChange}
+                value={username}
+                name='username'
+              />
+              <input
+                type='email'
+                placeholder='Email'
+                onChange={this.handelChange}
+                value={email}
+                name='email'
+              />
+              <input
+                type='password'
+                placeholder='password'
+                onChange={this.handelChange}
+                value={password}
+                name='password'
+              />
+              <input
+                type='password'
+                placeholder='repeat password'
+                onChange={this.handelChange}
+                value={password2}
+                name='password2'
+              />
+              <button type='submit' disabled={loading || this.validateForm()}>
+                {" "}
+                Submit
+              </button>
+            </form>
+          )}
+        </Mutation>
       </div>
     );
   }
