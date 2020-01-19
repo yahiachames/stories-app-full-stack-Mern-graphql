@@ -4,11 +4,14 @@ const bcrypt = require("bcryptjs");
 
 exports.resolvers = {
   Query: {
-    hello: () => console.log("hello chmisa")
+    getCurrentUser: async (root, args, { currentUser, User }) => {
+      const user = await User.findOne({ username: currentUser.username });
+      return user;
+    }
   },
 
   Mutation: {
-    signupUser: async (root, { username, password, email }, context) => {
+    signupUser: async (root, { username, password, email }, { User }) => {
       const user = await User.findOne({ username });
       if (user) {
         throw new Error("username was used ");

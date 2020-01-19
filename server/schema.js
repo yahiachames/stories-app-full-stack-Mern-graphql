@@ -7,7 +7,7 @@ type Token {
     token : String!
 }
 type Query {
-    hello:String
+   getCurrentUser : User!
 }
 type Mutation {
     signupUser(username:String!,password:String!,email:String!) : Token!

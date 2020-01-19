@@ -6,3 +6,11 @@ export const SIGNUP_USER = gql`
     }
   }
 `;
+export const GET_CURRENT_USER = gql`
+  query getCurrentUser {
+    getCurrentUser {
+      username
+      email
+    }
+  }
+`;

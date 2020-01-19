@@ -1,6 +1,41 @@
-import React from "react";
-const SignIn = () => {
-  return <div>this is SignIn</div>;
-};
+import React, { Component } from "react";
+class signIn extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: ""
+    };
+    this.handelChange = this.handelChange.bind(this);
+  }
+  handelChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
-export default SignIn;
+  render() {
+    const { username, password } = this.state;
+    return (
+      <div>
+        {" "}
+        <form>
+          <h2>Sign in</h2>
+          <input
+            type='text'
+            name='username'
+            placeholder='username'
+            onChange={this.handelChange}
+          />
+          <input
+            type='password'
+            name='password'
+            placeholder='password'
+            onChange={this.handelChange}
+          />
+          <button>Submit</button>
+        </form>
+      </div>
+    );
+  }
+}
+
+export default signIn;

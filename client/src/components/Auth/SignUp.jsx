@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { SIGNUP_USER } from "../../queries/index";
 import { Mutation } from "react-apollo";
+import { withRouter } from "react-router-dom";
+import Error from "../Error";
 
 class SignUp extends Component {
   constructor(props) {
@@ -42,6 +44,8 @@ class SignUp extends Component {
                     variables: { email, username, password }
                   });
                   localStorage.setItem("token", data.signupUser.token);
+                  await this.props.refetch();
+                  this.props.history.push("/");
                   this.setState({ username: "", password: "", email: "" });
                 } catch (err) {
                   console.log(err);
@@ -80,6 +84,7 @@ class SignUp extends Component {
                 {" "}
                 Submit
               </button>
+              {error ? <Error message={error.message.split(":")[1]} /> : ""}
             </form>
           )}
         </Mutation>
@@ -88,4 +93,4 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+export default withRouter(SignUp);
