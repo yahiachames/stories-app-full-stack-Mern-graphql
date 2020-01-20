@@ -55,7 +55,7 @@ const RootWithSession = withSession(Root);
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Root />
+    <RootWithSession />
   </ApolloProvider>,
 
   document.getElementById("root")

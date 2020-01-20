@@ -31,6 +31,19 @@ exports.resolvers = {
       });
 
       return { token };
+    },
+    //sign in user
+    signinUser: async (root, { username, password }, { User }) => {
+      const user = await User.findOne({ username });
+      if (!user) throw Error("user not found ");
+      const isMatch = bcrypt.compareSync(password, user.password);
+      if (!isMatch) throw Error("password is wrong");
+      const token = await jwt.sign(
+        { username, email: user.email },
+        process.env.SECRET,
+        { expiresIn: "1d" }
+      );
+      return { token };
     }
   }
 };

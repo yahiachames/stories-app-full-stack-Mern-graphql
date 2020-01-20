@@ -17,7 +17,12 @@ class signIn extends Component {
     return (
       <div>
         {" "}
-        <form>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            console.log("submit");
+          }}
+        >
           <h2>Sign in</h2>
           <input
             type='text'
@@ -31,7 +36,7 @@ class signIn extends Component {
             placeholder='password'
             onChange={this.handelChange}
           />
-          <button>Submit</button>
+          <button type='submit'>Submit</button>
         </form>
       </div>
     );
